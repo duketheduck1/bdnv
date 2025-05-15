@@ -153,3 +153,24 @@
   );
   border: 1px solid hsl(var(--border) / 0.2);
 }
+
+.search-placeholder {
+  position: absolute;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.5;
+  animation: placeholder-cycle 15s linear infinite;
+  width: auto;
+  white-space: nowrap;
+}
+
+@keyframes placeholder-cycle {
+  0%, 15% { content: "bahamut.ftn"; opacity: 0; transform: translateY(-60%) }
+  20%, 35% { content: "crypto.ftn"; opacity: 1; transform: translateY(-50%) }
+  40%, 55% { content: "defi.ftn"; opacity: 1; transform: translateY(-50%) }
+  60%, 75% { content: "nft.ftn"; opacity: 1; transform: translateY(-50%) }
+  80%, 95% { content: "stake.ftn"; opacity: 1; transform: translateY(-50%) }
+  100% { opacity: 0; transform: translateY(-40%) }
+}

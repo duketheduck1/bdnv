@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,51 +17,18 @@ const suggestedDomains = [
 
 const AnimatedSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [placeholder, setPlaceholder] = useState('');
-  const [isTyping, setIsTyping] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [showResults, setShowResults] = useState(false);
-  const [glowIntensity, setGlowIntensity] = useState(0);
-  
-  useEffect(() => {
-    const glowInterval = setInterval(() => {
-      setGlowIntensity(prev => (prev + 0.05) % 1);
-    }, 100);
-    
-    return () => clearInterval(glowInterval);
-  }, []);
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
   
   useEffect(() => {
     if (searchTerm) return;
-
-    const typeText = async () => {
-      const domain = suggestedDomains[currentIndex];
-      setPlaceholder('');
-      
-      // Type each character with a delay
-      for (let i = 0; i <= domain.length; i++) {
-        if (searchTerm) break; // Stop if user starts typing
-        setPlaceholder(domain.substring(0, i) + '.ftn');
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-      
-      // Wait before starting deletion
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Delete each character with a delay
-      for (let i = domain.length; i >= 0; i--) {
-        if (searchTerm) break; // Stop if user starts typing
-        setPlaceholder(domain.substring(0, i) + '.ftn');
-        await new Promise(resolve => setTimeout(resolve, 50));
-      }
-      
-      // Move to next domain
-      setCurrentIndex((prev) => (prev + 1) % suggestedDomains.length);
-    };
-
-    const timer = setTimeout(typeText, 500);
-    return () => clearTimeout(timer);
-  }, [currentIndex, searchTerm]);
+    
+    const interval = setInterval(() => {
+      setCurrentPlaceholder((prev) => (prev + 1) % suggestedDomains.length);
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [searchTerm]);
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,17 +68,12 @@ const AnimatedSearch = () => {
   return (
     <div className="w-full max-w-3xl mx-auto">
       <form onSubmit={handleSearch} className="relative">
-        <div 
-          className="glass-effect rounded-lg flex items-center overflow-hidden shadow-xl transition-all duration-500"
-          style={{
-            boxShadow: `0 0 ${10 + glowIntensity * 15}px ${5 + glowIntensity * 10}px hsl(var(--chart-1) / ${0.3 + glowIntensity * 0.2})`,
-          }}
-        >
+        <div className="glass-effect rounded-lg flex items-center overflow-hidden shadow-xl">
           <Input
             type="text"
             value={searchTerm}
             onChange={handleInputChange}
-            placeholder="Search for your .ftn name"
+            placeholder={`${suggestedDomains[currentPlaceholder]}.ftn`}
             className="flex-1 bg-transparent border-none text-xl py-7 px-6 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors placeholder:text-muted-foreground/50"
           />
           <div className="px-4">
@@ -122,17 +86,6 @@ const AnimatedSearch = () => {
             </Button>
           </div>
         </div>
-        
-        {!searchTerm && placeholder && (
-          <div 
-            className="absolute left-6 top-1/2 -translate-y-1/2 pointer-events-none"
-            style={{ zIndex: -1 }}
-          >
-            <div className="typing-container">
-              <span className="typing-text text-xl">{placeholder}</span>
-            </div>
-          </div>
-        )}
         
         {showResults && (
           <div className="mt-2 glass-effect rounded-lg overflow-hidden animate-fade-in">
