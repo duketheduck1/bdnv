@@ -107,3 +107,25 @@
 .animate-fade-in {
   animation: fade-in 0.5s ease-out forwards;
 }
+
+.typing-container {
+  display: inline-block;
+}
+
+.typing-text {
+  display: inline-block;
+  overflow: hidden;
+  border-right: 2px solid hsl(var(--chart-1));
+  white-space: nowrap;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: hsl(var(--chart-1)) }
+}
