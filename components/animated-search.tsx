@@ -30,23 +30,36 @@ const AnimatedSearch = () => {
   }, []);
   
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (isTyping) {
-        if (!searchTerm) {
-          setPlaceholder(suggestedDomains[currentIndex] + '.ftn');
-        }
-        setTimeout(() => {
-          setIsTyping(false);
-          setTimeout(() => {
-            setCurrentIndex((currentIndex + 1) % suggestedDomains.length);
-            setIsTyping(true);
-          }, 1000);
-        }, 1500);
+    if (searchTerm) return;
+
+    const typeText = async () => {
+      const domain = suggestedDomains[currentIndex];
+      setPlaceholder('');
+      
+      // Type each character with a delay
+      for (let i = 0; i <= domain.length; i++) {
+        if (searchTerm) break; // Stop if user starts typing
+        setPlaceholder(domain.substring(0, i) + '.ftn');
+        await new Promise(resolve => setTimeout(resolve, 100));
       }
-    }, 3000);
-    
-    return () => clearInterval(interval);
-  }, [currentIndex, isTyping, searchTerm]);
+      
+      // Wait before starting deletion
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Delete each character with a delay
+      for (let i = domain.length; i >= 0; i--) {
+        if (searchTerm) break; // Stop if user starts typing
+        setPlaceholder(domain.substring(0, i) + '.ftn');
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+      
+      // Move to next domain
+      setCurrentIndex((prev) => (prev + 1) % suggestedDomains.length);
+    };
+
+    const timer = setTimeout(typeText, 500);
+    return () => clearTimeout(timer);
+  }, [currentIndex, searchTerm]);
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,13 +68,7 @@ const AnimatedSearch = () => {
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    if (e.target.value) {
-      setPlaceholder('');
-      setShowResults(true);
-    } else {
-      setPlaceholder(suggestedDomains[currentIndex] + '.ftn');
-      setShowResults(false);
-    }
+    setShowResults(!!e.target.value);
   };
 
   const MockResult = ({ name, available }: { name: string, available: boolean }) => (
@@ -93,7 +100,7 @@ const AnimatedSearch = () => {
     <div className="w-full max-w-3xl mx-auto">
       <form onSubmit={handleSearch} className="relative">
         <div 
-          className="bg-card/50 backdrop-blur-xl rounded-lg border border-border/50 flex items-center overflow-hidden shadow-xl transition-all duration-500"
+          className="glass-effect rounded-lg flex items-center overflow-hidden shadow-xl transition-all duration-500"
           style={{
             boxShadow: `0 0 ${10 + glowIntensity * 15}px ${5 + glowIntensity * 10}px hsl(var(--chart-1) / ${0.3 + glowIntensity * 0.2})`,
           }}
@@ -103,7 +110,7 @@ const AnimatedSearch = () => {
             value={searchTerm}
             onChange={handleInputChange}
             placeholder="Search for your .ftn name"
-            className="flex-1 bg-transparent border-none text-xl py-7 px-6 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
+            className="flex-1 bg-transparent border-none text-xl py-7 px-6 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors placeholder:text-muted-foreground/50"
           />
           <div className="px-4">
             <Button 
@@ -122,13 +129,13 @@ const AnimatedSearch = () => {
             style={{ zIndex: -1 }}
           >
             <div className="typing-container">
-              <span className="typing-text opacity-50 text-muted-foreground">{placeholder}</span>
+              <span className="typing-text text-xl">{placeholder}</span>
             </div>
           </div>
         )}
         
         {showResults && (
-          <div className="mt-2 bg-card/50 backdrop-blur-xl rounded-lg border border-border/50 overflow-hidden animate-fade-in">
+          <div className="mt-2 glass-effect rounded-lg overflow-hidden animate-fade-in">
             <MockResult name={searchTerm || "bahamut"} available={true} />
             <MockResult name="crypt0" available={false} />
             <MockResult name="defi" available={false} />
