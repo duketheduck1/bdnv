@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import { useRouter } from 'next/navigation';
-import LoginWithEmail from '@/components/AuthForm';
+import WalletLoginButton from '@/components/WalletLoginButton';
 
 export default function LoginPage() {
   const { login, ready, authenticated } = usePrivy();
@@ -19,7 +19,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center">
         <h1 className="text-3xl font-bold mb-8">Welcome Back</h1>
-        <LoginWithEmail />
+        <WalletLoginButton />
       </div>
     </div>
   );

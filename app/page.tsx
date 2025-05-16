@@ -2,7 +2,7 @@
 
 import { HeroSection } from "@/components/hero-section";
 import { HowItWorks } from "@/components/how-it-works";
-import { Navbar } from "@/components/navbar";
+import Navbar from "@/components/navbar";
 import { PricingSection } from "@/components/pricing-section";
 import { SecuritySection } from "@/components/security-section";
 import { Footer } from "@/components/footer";

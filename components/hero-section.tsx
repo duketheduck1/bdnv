@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/hooks/use-in-view";
 import AnimatedSearch from "./animated-search";
-import AuthButton from "./AuthButton";
+import WalletLoginButton from "./WalletLoginButton";
 
 export function HeroSection() {
   const { ref, inView } = useInView({ threshold: 0.1 });
@@ -33,9 +33,7 @@ export function HeroSection() {
           </div>
           
           <div className="flex flex-wrap justify-center gap-4 mt-8">
-            <AuthButton size="lg" variant="outline">
-              Login
-            </AuthButton>
+            <WalletLoginButton size="lg" variant="outline" />
             <Button size="lg" variant="outline">
               Learn More
             </Button>

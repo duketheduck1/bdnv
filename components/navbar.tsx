@@ -1,23 +1,15 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
+  NavigationMenu, NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
+  NavigationMenuList, navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
-import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
-import { Wallet2 } from "lucide-react";
-import AuthButton from "./AuthButton";
+import WalletLoginButton from "./WalletLoginButton";
 
-export function Navbar() {
+export default function Navbar() {
   return (
     <div className="sticky top-0 z-50 w-full backdrop-blur-lg bg-background/70 border-b border-border/40">
       <div className="container flex h-16 items-center">
@@ -62,10 +54,7 @@ export function Navbar() {
         </div>
         <div className="flex items-center gap-4">
           <ModeToggle />
-          <AuthButton>
-            <Wallet2 className="w-4 h-4" />
-            Connect Wallet
-          </AuthButton>
+          <WalletLoginButton />
         </div>
       </div>
     </div>
