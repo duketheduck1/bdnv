@@ -12,7 +12,7 @@ import WalletLoginButton from "./WalletLoginButton";
 export default function Navbar() {
   return (
     <div className="sticky top-0 z-50 w-full backdrop-blur-lg bg-background/70 border-b border-border/40">
-      <div className="container flex h-16 items-center">
+      <div className="container flex h-16 items-center mx-auto">
         <div className="mr-4 flex">
           <Link href="/" className="flex items-center space-x-2">
             <div className="bg-primary rounded-full p-1">
