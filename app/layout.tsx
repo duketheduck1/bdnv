@@ -1,3 +1,4 @@
+import Providers from "@/components/Providers";
 import './globals.css';
 import type { Metadata } from 'next';
 
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

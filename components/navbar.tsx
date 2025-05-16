@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Wallet2 } from "lucide-react";
+import AuthButton from "./AuthButton";
 
 export function Navbar() {
   return (
@@ -61,13 +62,10 @@ export function Navbar() {
         </div>
         <div className="flex items-center gap-4">
           <ModeToggle />
-          <Button
-            variant="outline"
-            className="hidden sm:flex items-center gap-2 text-sm border border-border/80 hover:bg-accent"
-          >
+          <AuthButton>
             <Wallet2 className="w-4 h-4" />
             Connect Wallet
-          </Button>
+          </AuthButton>
         </div>
       </div>
     </div>
