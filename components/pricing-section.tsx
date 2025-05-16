@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 import { 
   BarChart, 
   Bar, 
-  XAxis, 
-  YAxis, 
+  XAxis as RechartsXAxis, 
+  YAxis as RechartsYAxis, 
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
@@ -99,13 +99,13 @@ export function PricingSection() {
                   margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                  <XAxis 
+                  <RechartsXAxis 
                     dataKey="length" 
                     tick={{ fill: "var(--muted-foreground)" }}
                     tickLine={{ stroke: "var(--border)" }}
                     axisLine={{ stroke: "var(--border)" }}
                   />
-                  <YAxis 
+                  <RechartsYAxis 
                     tick={{ fill: "var(--muted-foreground)" }}
                     tickLine={{ stroke: "var(--border)" }}
                     axisLine={{ stroke: "var(--border)" }}
