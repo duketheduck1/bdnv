@@ -1,8 +1,18 @@
-// components/Providers.tsx
 'use client';
 
-import React from 'react';
+import { WagmiProvider, createConfig, http } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PrivyProvider } from '@privy-io/react-auth';
+
+const config = createConfig({
+  chains: [mainnet],
+  transports: {
+    [mainnet.id]: http(),
+  },
+});
+
+const queryClient = new QueryClient();
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -13,7 +23,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         loginMethods: ['wallet'],
       }}
     >
-      {children}
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </WagmiProvider>
     </PrivyProvider>
   );
 }
