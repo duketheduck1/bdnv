@@ -137,8 +137,8 @@ export function SecuritySection() {
                       key={i} 
                       className="absolute w-12 h-12 bg-card border-2 border-primary rounded-lg flex items-center justify-center shadow-lg"
                       style={{
-                        top: `calc(50% - 24px + ${y}px)`,
-                        left: `calc(50% - 24px + ${x}px)`,
+                        top: `calc(50% - 24px ${y > 0 ? '+' : '-'} ${Math.abs(y).toFixed(2)}px)`,
+                        left: `calc(50% - 24px ${x > 0 ? '+' : '-'} ${Math.abs(x).toFixed(2)}px)`,
                         animation: `pulse 2s infinite ${i * 0.5}s`
                       }}
                     >
