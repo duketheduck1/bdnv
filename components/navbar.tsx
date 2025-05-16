@@ -15,10 +15,8 @@ export default function Navbar() {
       <div className="container flex h-16 items-center mx-auto">
         <div className="mr-4 flex">
           <Link href="/" className="flex items-center space-x-2">
-            <div className="bg-primary rounded-full p-1">
-              <div className="w-6 h-6 rounded-full bg-background flex items-center justify-center">
-                <span className="text-primary font-bold text-sm">BNS</span>
-              </div>
+            <div className="p-1">
+              <img src="https://res.cloudinary.com/dlyw0o11c/image/upload/v1747408803/bns-icon-logo-2025-05-14_m6cyzx.png" alt="bns logo" width="36" height="36" className="aspect-square" />
             </div>
             <span className="font-bold text-xl hidden sm:inline-block">
               Bahamut Name Service
