@@ -7,6 +7,7 @@ import { ButtonProps } from "./ui/button";
 import { useWalletStore } from '@/store/useWalletStore';
 import { useEffect } from 'react';
 import { useWallets } from '@privy-io/react-auth';
+import { useRouter } from 'next/navigation';
 
 interface WalletLoginButtonProps extends ButtonProps {
     variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
@@ -15,7 +16,16 @@ interface WalletLoginButtonProps extends ButtonProps {
 export default function WalletLoginButton({variant, ...props}: WalletLoginButtonProps) {
     const { ready, authenticated } = usePrivy();
     const { wallets } = useWallets();
-    const { login } = useLogin();
+    const router = useRouter();
+    const { login } = useLogin({
+        onComplete: (params) => {
+            console.log('Login successful:', params);
+            router.push('/dashboard');
+        },
+        onError: (error) => {
+            console.error('Login error:', error);
+        },
+    });
     const setWalletData = useWalletStore(state => state.setWalletData);
     const clearWalletData = useWalletStore(state => state.clearWalletData);
     

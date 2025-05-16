@@ -1,10 +1,13 @@
 import { useAccount, useDisconnect } from 'wagmi';
 import { LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLogout } from "@privy-io/react-auth";
+import { useRouter } from 'next/navigation';
 
 export default function DashboardHeader() {
   const { address } = useAccount();
-  const { disconnect } = useDisconnect();
+  const { logout } = useLogout();
+  const router = useRouter();
   
   const shortenAddress = (addr: string) => {
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
@@ -24,7 +27,7 @@ export default function DashboardHeader() {
         
         <Button
           variant="outline"
-          onClick={() => disconnect()}
+          onClick={() => { logout(); router.push('/') }}
           className="border-border/10"
         >
           <LogOut className="h-4 w-4 mr-2" />
