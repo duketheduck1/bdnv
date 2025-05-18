@@ -1,25 +1,54 @@
-import Providers from "@/components/Providers";
-import '@/app/globals.css';
-import type { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Bahamut Name Service | Stake, Don\'t Pay',
-  description: 'The first domain service where you lock tokens instead of spending them. Your tokens, your domain, forever.',
-};
+import './globals.css';
+import { PrivyProvider } from '@privy-io/react-auth';
+import { WagmiProvider, createConfig, http } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// Create Wagmi config
+const config = createConfig({
+  chains: [mainnet],
+  transports: {
+    [mainnet.id]: http(),
+  },
+});
+
+// Create React Query client
+const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Get Privy credentials from environment variables
+  const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID || '';
+  const privyClientId = process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID || '';
+  
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="https://res.cloudinary.com/dlyw0o11c/image/upload/v1747408803/bns-icon-logo-2025-05-14_m6cyzx.png" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </head>
       <body>
-        <Providers>{children}</Providers>
+        <PrivyProvider
+          appId={privyAppId}
+          clientId={privyClientId}
+          config={{
+            embeddedWallets: {
+              createOnLogin: "all-users",
+            },
+            loginMethods: ['wallet', 'email', 'google'],
+            appearance: {
+              theme: 'light',
+              accentColor: '#3B82F6'
+            }
+          }}
+        >
+          <WagmiProvider config={config}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </WagmiProvider>
+        </PrivyProvider>
       </body>
     </html>
   );

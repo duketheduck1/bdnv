@@ -1,5 +1,10 @@
 import { create } from 'zustand'
-import { ConnectedWallet } from '@privy-io/react-auth'
+// Define ConnectedWallet type since it's not exported from the type definitions
+interface ConnectedWallet {
+    address: string;
+    chainId: string;
+    [key: string]: any;
+}
 
 interface WalletState {
     wallets: ConnectedWallet[]
