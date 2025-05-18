@@ -29,6 +29,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTheme } from "next-themes";
 
 // Domain examples with staking amounts based on length and popularity
 const domainExamples = [
@@ -46,11 +47,11 @@ const domainExamples = [
 
 // Data for length-based pricing chart
 const lengthPricingData = [
-  { length: "2-3 letters", baseCost: 5000, fill: "var(--chart-1)" },
-  { length: "4 letters", baseCost: 3000, fill: "var(--chart-2)" },
-  { length: "5 letters", baseCost: 2000, fill: "var(--chart-3)" },
-  { length: "6-7 letters", baseCost: 1500, fill: "var(--chart-4)" },
-  { length: "8+ letters", baseCost: 800, fill: "var(--chart-5)" },
+  { length: "2-3 letters", baseCost: 5000 },
+  { length: "4 letters", baseCost: 3000 },
+  { length: "5 letters", baseCost: 2000 },
+  { length: "6-7 letters", baseCost: 1500 },
+  { length: "8+ letters", baseCost: 800 },
 ];
 
 // Custom tooltip for chart
@@ -70,6 +71,11 @@ const CustomTooltip = ({ active, payload }: any) => {
 export function PricingSection() {
   const { ref, inView } = useInView({ threshold: 0.1 });
   const [selectedExample, setSelectedExample] = useState<(typeof domainExamples)[0] | null>(null);
+  const { theme } = useTheme();
+
+  const axisColor = theme === 'dark' ? '#fff' : 'var(--muted-foreground)';
+  const gridColor = theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'var(--border)';
+  const barColor = theme === 'dark' ? '#fff' : 'var(--primary)';
 
   return (
     <section
@@ -96,27 +102,29 @@ export function PricingSection() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={lengthPricingData}
-                  margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
                   <RechartsXAxis 
                     dataKey="length" 
-                    tick={{ fill: "var(--muted-foreground)" }}
-                    tickLine={{ stroke: "var(--border)" }}
-                    axisLine={{ stroke: "var(--border)" }}
+                    tick={{ fill: axisColor }}
+                    tickLine={{ stroke: gridColor }}
+                    axisLine={{ stroke: gridColor }}
+                    height={70}
+                    angle={-35}
+                    textAnchor="end"
+                    interval={0}
+                    dx={-8}
+                    dy={8}
                   />
                   <RechartsYAxis 
-                    tick={{ fill: "var(--muted-foreground)" }}
-                    tickLine={{ stroke: "var(--border)" }}
-                    axisLine={{ stroke: "var(--border)" }}
+                    tick={{ fill: axisColor }}
+                    tickLine={{ stroke: gridColor }}
+                    axisLine={{ stroke: gridColor }}
                     tickFormatter={(value) => `${value} FTN`}
                   />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="baseCost" radius={[4, 4, 0, 0]}>
-                    {lengthPricingData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.fill} />
-                    ))}
-                  </Bar>
+                  <Bar dataKey="baseCost" radius={[4, 4, 0, 0]} fill={barColor} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
